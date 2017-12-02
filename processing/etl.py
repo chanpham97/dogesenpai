@@ -12,8 +12,8 @@ def normalize_data():
     preconditions_value_map = {'Low': 0.333, 'Medium': 0.666, 'High': 1}
 
     # need to find min/max for fields first
-    min_max_fields = ['OPTIONAL_INSURED', 'WEIGHT', 'DOB', 'HEIGHT', 'PEOPLE_COVERED', 'SILVER', 'BRONZE', 'PLATINUM', 'ANNUAL_INCOME', 'longitude', 'latitude', 'GOLD']
-    mm_dict = {field: (0., 0.) for field in min_max_fields}
+    min_max_fields = ['OPTIONAL_INSURED', 'WEIGHT', 'DOB', 'HEIGHT', 'PEOPLE_COVERED', 'SILVER', 'BRONZE', 'PLATINUM', 'ANNUAL_INCOME', 'longitude', 'latitude', 'GOLD', 'BMI']
+    mm_dict = {field: (1000000000000000., -1000000000000000.) for field in min_max_fields}
     print 'Finding min/max for fields...'
     progress = 0
     for row in read_data(csv_file):
@@ -21,6 +21,8 @@ def normalize_data():
         if row['DOB'] == '':
             continue
         for field, (minny, maxy) in mm_dict.iteritems():
+            if field == 'BMI':
+                continue
             value = row[field]
             if field == 'DOB':
                 value = time_to_float(value)
@@ -31,16 +33,28 @@ def normalize_data():
             maxy = max(maxy, value)
 
             mm_dict[field] = (minny, maxy)
+
+        # calculate BMI
+        h_squared = (convert_to_value(float(row['HEIGHT'])*2-1, 'HEIGHT')*0.025)**2
+        w = convert_to_value(float(row['WEIGHT'])*2-1, 'WEIGHT')*0.45
+        bmi = w/h_squared
+        (minny, maxy) = mm_dict['BMI']
+        minny = min(minny, bmi)
+        maxy = max(maxy, bmi)
+        mm_dict['BMI'] = (minny, maxy)
+
         if progress % 50000 == 0:
             print progress
     # other fields
-    other_fields = ['sex', 'MARITAL_STATUS', 'PURCHASED']
+    other_fields = ['sex', 'MARITAL_STATUS', 'PURCHASED', 'TOBACCO']
+
     '''
     sex - '',M,F (blank -> F)
     MARITAL_STATUS - S,M
     EMPLOYMENT_STATUS - Unemployed => skip
-    PURCHASED - ['Platinum', 'Gold', 'Silver', 'Bronze']
+    PURCHASED - ['Bronze', 'Silver', 'Gold', 'Platinum']
     PRE_CONDITIONS - [0, 0.3, 0.6, 1.0] (none, low, med, high)
+    TOBACCO - Yes/No -> 0
     '''
     field_names = min_max_fields + other_fields + preconditions.keys()
 
@@ -60,6 +74,8 @@ def normalize_data():
 
             # normalizable fields
             for field, (minny, maxy) in mm_dict.iteritems():
+                if field == 'BMI':
+                    continue
                 value = row[field]
                 if field == 'DOB':
                     value = time_to_float(value)
@@ -69,10 +85,20 @@ def normalize_data():
                 value = (value-middle)/(maxy-middle)
                 to_write[field] = value
 
+            # calculate BMI
+            h_squared = (convert_to_value(float(row['HEIGHT'])*2-1, 'HEIGHT')*0.025)**2
+            w = convert_to_value(float(row['WEIGHT'])*2-1, 'WEIGHT')*0.45
+            bmi = w/h_squared
+            (minny, maxy) = mm_dict['BMI']
+            middle = (minny+maxy)/2.
+            value = (bmi-middle)/(maxy-middle)
+            to_write['BMI'] = bmi
+
             # other fields
             to_write['sex'] = 1 if row['sex'] == 'M' else 0
             to_write['MARITAL_STATUS'] = 1 if row['MARITAL_STATUS'] == 'M' else 0
             to_write['PURCHASED'] = ['Bronze', 'Silver', 'Gold', 'Platinum'].index(row['PURCHASED'])
+            to_write['TOBACCO'] = 1 if row['TOBACCO'] == 'Yes' else 0
 
             # Handle Pre-Conditions
             leftover_pcs = set(preconditions.keys())
@@ -119,5 +145,36 @@ def time_to_float(value):
     t = parser.parse(value).replace(tzinfo=None)
     return (t-datetime.datetime(1970,1,1)).total_seconds()
 
+def convert_to_value(reg_val, key):
+    info = {'PLATINUM': (110.0, 406.0), 'OPTIONAL_INSURED': (500000.0, 1000000.0), 'ANNUAL_INCOME': (100000.0, 1000000.0), 'GOLD': (70.0, 286.0), 'WEIGHT': (100.0, 300.0), 'DOB': (-1014428902.0, 942099098.0), 'longitude': (-177.0, 171.0), 'HEIGHT': (50.0, 80.0), 'PEOPLE_COVERED': (1.0, 4.0), 'latitude': (7.0, 71.0), 'SILVER': (40.0, 196.0), 'BRONZE': (20.0, 136.0)}
+    minny, maxy = info[key]
+    middle = (minny+maxy)/2
+    return reg_val*(maxy-middle)+middle
+
+
+
+def lassoize(fname='norm_data.csv'):
+    field_names = ['OPTIONAL_INSURED', 'WEIGHT', 'DOB', 'HEIGHT', 'BMI', 'PEOPLE_COVERED', 'SILVER', 'BRONZE', 'PLATINUM', 'ANNUAL_INCOME', 'longitude', 'latitude', 'GOLD', 'sex', 'MARITAL_STATUS', 'PURCHASED', 'TOBACCO', 'E11.65', 'N18.9', 'R00.8', 'T85.622', 'B20.1', 'R19.7', 'R00.0', 'F10.121', 'G30.0', 'G80.4', 'R04.2', 'S62.308', 'M05.10', 'F14.121', 'G47.33', 'T84.011', 'Z91.010', 'B18.1']
+    min_max_fields = ['OPTIONAL_INSURED', 'WEIGHT', 'DOB', 'HEIGHT', 'BMI', 'PEOPLE_COVERED', 'SILVER', 'BRONZE', 'PLATINUM', 'ANNUAL_INCOME', 'longitude', 'latitude', 'GOLD']
+    with open('lasso_data.csv', 'w') as f:
+        writer = csv.DictWriter(f, fieldnames=field_names)
+        writer.writeheader()
+        for row in read_data(fname):
+            for field in min_max_fields:
+                row[field] = (float(row[field])+1)/2.0
+            row['DOB'] *= -1
+            writer.writerow(row)
+
+# def add_bmi(fname='../lasso_data.csv'):
+#     field_names = ['OPTIONAL_INSURED', 'WEIGHT', 'DOB', 'HEIGHT', 'PEOPLE_COVERED', 'SILVER', 'BRONZE', 'PLATINUM', 'ANNUAL_INCOME', 'longitude', 'latitude', 'GOLD', 'sex', 'MARITAL_STATUS', 'PURCHASED', 'TOBACCO', 'E11.65', 'N18.9', 'R00.8', 'T85.622', 'B20.1', 'R19.7', 'R00.0', 'F10.121', 'G30.0', 'G80.4', 'R04.2', 'S62.308', 'M05.10', 'F14.121', 'G47.33', 'T84.011', 'Z91.010', 'B18.1','BMI']
+#     min_max_fields = ['OPTIONAL_INSURED', 'WEIGHT', 'DOB', 'HEIGHT', 'PEOPLE_COVERED', 'SILVER', 'BRONZE', 'PLATINUM', 'ANNUAL_INCOME', 'longitude', 'latitude', 'GOLD']
+#     with open('lasso_data2.csv', 'w') as f:
+#         writer = csv.DictWriter(f, fieldnames=field_names)
+#         writer.writeheader()
+#         for row in read_data(fname):
+            
+
+
 if __name__ == '__main__':
-    normalize_data()
+    # normalize_data()
+    lassoize()
