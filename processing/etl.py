@@ -59,7 +59,7 @@ def normalize_data():
     field_names = min_max_fields + other_fields + preconditions.keys()
 
     print 'Transforming data...'
-    outfile = 'norm_data.csv'
+    outfile = 'norm_datahot.csv'
     progress = 0
     with open(outfile, 'w') as f:
         writer = csv.DictWriter(f, fieldnames=list(field_names))
@@ -92,7 +92,7 @@ def normalize_data():
             (minny, maxy) = mm_dict['BMI']
             middle = (minny+maxy)/2.
             value = (bmi-middle)/(maxy-middle)
-            to_write['BMI'] = bmi
+            to_write['BMI'] = value
 
             # other fields
             to_write['sex'] = 1 if row['sex'] == 'M' else 0
@@ -106,7 +106,7 @@ def normalize_data():
                 pcs = eval(row['PRE_CONDITIONS'])
 
                 for pc in pcs:
-                    to_write[pc['ICD_CODE']] = preconditions_value_map[pc['Risk_factor']]
+                    to_write[pc['ICD_CODE']] = 1#preconditions_value_map[pc['Risk_factor']]
                     leftover_pcs.remove(pc['ICD_CODE'])
 
             for pc in leftover_pcs:
@@ -153,10 +153,10 @@ def convert_to_value(reg_val, key):
 
 
 
-def lassoize(fname='norm_data.csv'):
+def lassoize(fname='norm_datahot.csv'):
     field_names = ['OPTIONAL_INSURED', 'WEIGHT', 'DOB', 'HEIGHT', 'BMI', 'PEOPLE_COVERED', 'SILVER', 'BRONZE', 'PLATINUM', 'ANNUAL_INCOME', 'longitude', 'latitude', 'GOLD', 'sex', 'MARITAL_STATUS', 'PURCHASED', 'TOBACCO', 'E11.65', 'N18.9', 'R00.8', 'T85.622', 'B20.1', 'R19.7', 'R00.0', 'F10.121', 'G30.0', 'G80.4', 'R04.2', 'S62.308', 'M05.10', 'F14.121', 'G47.33', 'T84.011', 'Z91.010', 'B18.1']
     min_max_fields = ['OPTIONAL_INSURED', 'WEIGHT', 'DOB', 'HEIGHT', 'BMI', 'PEOPLE_COVERED', 'SILVER', 'BRONZE', 'PLATINUM', 'ANNUAL_INCOME', 'longitude', 'latitude', 'GOLD']
-    with open('lasso_data.csv', 'w') as f:
+    with open('lasso_datahot.csv', 'w') as f:
         writer = csv.DictWriter(f, fieldnames=field_names)
         writer.writeheader()
         for row in read_data(fname):
@@ -177,4 +177,5 @@ def lassoize(fname='norm_data.csv'):
 
 if __name__ == '__main__':
     # normalize_data()
-    lassoize()
+    # lassoize()
+    print find_values('PURCHASED')

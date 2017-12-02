@@ -1,5 +1,6 @@
 import csv
 import numpy as np
+from keras.utils.np_utils import to_categorical
 
 
 label_fields = ['BRONZE', 'SILVER', 'GOLD', 'PLATINUM', 'PURCHASED']
@@ -59,9 +60,42 @@ def get_feature_sets_regression(fname='../norm_data.csv'):
 
     return X, y, X2, y2
 
+def get_feature_sets_classification(fname='../norm_datahot.csv', nn=True):
+    vecs = []
+    label_data = []
+    label = 'PURCHASED'
+    count = 0
+    for data in get_data_from_csv(fname=fname):
+        # count += 1
+        # if count > 15000:
+        #     break
+        # ind = int(data[label])
+        label_data.append(int(data[label]))
+        # label_data.append([0 if i != ind else 1 for i in xrange(4)])
+        del data[label]
+        vec = np.array([float(data[key]) for key in fields])
+        vecs.append(vec)
+
+    if nn:
+        label_data = to_categorical(label_data, num_classes=4)
+
+    X = np.array(vecs[:1000000])
+    y = np.array(label_data[:1000000])
+    X2 = np.array(vecs[1000000:])
+    y2 = np.array(label_data[1000000:])
+
+    return X, y, X2, y2
+
 def convert_to_value(reg_val, key):
     info = {'PLATINUM': (110.0, 406.0), 'OPTIONAL_INSURED': (500000.0, 1000000.0), 'ANNUAL_INCOME': (100000.0, 1000000.0), 'GOLD': (70.0, 286.0), 'WEIGHT': (100.0, 300.0), 'DOB': (-1014428902.0, 942099098.0), 'longitude': (-177.0, 171.0), 'HEIGHT': (50.0, 80.0), 'PEOPLE_COVERED': (1.0, 4.0), 'latitude': (7.0, 71.0), 'SILVER': (40.0, 196.0), 'BRONZE': (20.0, 136.0)}
     minny, maxy = info[key]
     middle = (minny+maxy)/2
     return reg_val*(maxy-middle)+middle
+
+def denorm_vals(vals):
+    labels = ['BRONZE', 'SILVER', 'GOLD', 'PLATINUM']
+    result = []
+    for i in xrange(len(labels)):
+        result.append(convert_to_value(vals[i], labels[i]))
+    return result
 
