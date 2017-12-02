@@ -67,6 +67,18 @@ def merge():
             # print data2
             writer.writerow(data2)
 
+def without_precon():
+    with open('data_wo_precon.csv', 'w') as f:
+        it = read_data('../all_data.csv')
+        first = it.next()
+        del first['PRE_CONDITIONS']
+        writer = csv.DictWriter(f, fieldnames=list(first.keys()))
+        writer.writerow(first)
+        for row in it:
+            del row['PRE_CONDITIONS']
+            writer.writerow(row)
+
 
 if __name__ == '__main__':
-    merge()
+    # merge()
+    without_precon()
