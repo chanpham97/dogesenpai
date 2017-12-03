@@ -31,9 +31,19 @@ def alzheimers():
     with open('json/alzheimers.json') as f:
         return jsonify(json.load(f))
 
-@app.route('/api/num-covered-prem')
+@app.route('/api/numcoveredprem')
 def num_covered_prem():
     with open('json/num_covered_prem.json') as f:
+        return jsonify(json.load(f))
+
+@app.route('/api/stateprem')
+def state_prem():
+    with open('json/state_prem.json') as f:
+        return jsonify(json.load(f))
+
+@app.route('/api/stateage')
+def num_covered_prem():
+    with open('json/state_age.json') as f:
         return jsonify(json.load(f))
 
 
