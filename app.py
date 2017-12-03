@@ -28,7 +28,7 @@ def age_prem():
         data = json.load(f)
         for k, v in data.iteritems():
             data[k] = map(float, v)
-        return jsonify(json.load(f))
+        return jsonify(data)
 
 @app.route('/api/alzheimers')
 def alzheimers():
