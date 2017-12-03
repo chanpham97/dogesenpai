@@ -22,7 +22,7 @@ def base_model(classification=False):
 
     # output layer
     if classification:
-        d2 = Dense(4, activation='softmax')(d1)
+        d2 = Dense(4, activation='sigmoid')(d1)
     else:
         d2 = Dense(4, activation='linear')(d1)
 
@@ -34,7 +34,7 @@ def base_model(classification=False):
 def train_model(classification=False):
     if classification:
         X, y, X2, y2 = get_feature_sets_classification()
-        loss = 'categorical_crossentropy'
+        loss = 'binary_crossentropy'
         # {'Platinum': 0.1, 'Bronze': 0.2, 'Silver': 0.4, 'Gold': 0.3}
     else:
         X, y, X2, y2 = get_feature_sets_regression()
