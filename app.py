@@ -12,6 +12,10 @@ app = create_app()
 def hello():
 	return render_template('index.html')
 
-@app.route('/doge')
-def doge_hello():
-	return render_template('index-doge.html')
+@app.route('/d3')
+def d3_test():
+	return render_template('d3.html')
+
+@app.route('/precondhot.csv')
+def data():
+	return send_from_directory('')

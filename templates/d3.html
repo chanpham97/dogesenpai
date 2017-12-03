@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<svg width="960" height="500"></svg>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<head>
+  <title>my dude</title>
+</head>
+<body>
+  <p>hi</p>
+  <svg id="chart"></svg>
+</body>
+<script>
+console.log("please")
+// var svg = d3.select("svg"),
+//     margin = {top: 20, right: 20, bottom: 30, left: 50},
+//     width = +svg.attr("width") - margin.left - margin.right,
+//     height = +svg.attr("height") - margin.top - margin.bottom,
+//     g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+// console.log(svg)
+// var x = d3.scaleLinear()
+// 	.rangeRound([0, width])
+
+// var y = d3.scaleLinear()
+// 	.rangeRound([height, 0])
+// console.log(x)
+// var line = d3.line()
+// 	.x(function(d) {return x(d.alzheimer);})
+// 	.y(function(d) {return y(d.BRONZE);});
+
+// d3.csvParse("precondhot.csv", function(d){
+//   console.log("in parse")
+// 	d.alzheimer = +d.alzheimer;
+// 	d.BRONZE = +d.BRONZE;
+//   console.log(d)
+// 	return d;
+// }, function(err, data) {
+// 	if (err) throw err;
+
+// 	x.domain(d3.extent(data, function(d) { return d.alzheimer;}));
+// 	y.domain(d3.extent(data, function(d) {
+// 		return d.BRONZE;}));
+
+// 	g.append("g")
+//       .attr("transform", "translate(0," + height + ")")
+//       .call(d3.axisBottom(x))
+//     .select(".domain")
+//       .remove();
+
+//   g.append("g")
+//       .call(d3.axisLeft(y))
+//     .append("text")
+//       .attr("fill", "#000")
+//       .attr("transform", "rotate(-90)")
+//       .attr("y", 6)
+//       .attr("dy", "0.71em")
+//       .attr("text-anchor", "end")
+//       .text("Price ($)");
+
+//   g.append("path")
+//       .datum(data)
+//       .attr("fill", "none")
+//       .attr("stroke", "steelblue")
+//       .attr("stroke-linejoin", "round")
+//       .attr("stroke-linecap", "round")
+//       .attr("stroke-width", 1.5)
+//       .attr("d", line);
+// });
+
+  function drawChart(data) {
+    let indicator = "a"
+    let country = "b"
+  }
+
+  function loadData(cb){
+    d3.csv("precondhot.csv", (err, data) => {
+        cb(data)
+    })
+    console.log(data)
+  }
+
+  function main() {
+    d3.select("#chart")
+      .attr("width", 500)
+      .attr("height", 500)
+    loadData(drawChart)
+  }
+
+  main()
+
+</script>
