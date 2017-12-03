@@ -13,7 +13,7 @@ tf.logging.set_verbosity(tf.logging.ERROR)
 def base_model(classification=False):
     # create model
     # model = Sequential()
-    i = Input(shape=(29,), name='main_input')
+    i = Input(shape=(30,), name='main_input')
     d1 = Dense(300, activation='relu')(i)
     # model.add(Dropout(0.5))
     # model.add(Dense(2000, activation='relu'))
