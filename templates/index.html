@@ -126,7 +126,8 @@
                   <i class="fa fa-search-plus fa-3x"></i>
                 </div>
               </div>
-              <img class="img-fluid" src="static/img/portfolio/game.png" alt="">
+              <div id='myDiv4'></div>
+              <!-- <img class="img-fluid" src="static/img/portfolio/game.png" alt=""> -->
             </a>
           </div>
           <div class="col-md-6 col-lg-4">
@@ -136,7 +137,8 @@
                   <i class="fa fa-search-plus fa-3x"></i>
                 </div>
               </div>
-              <img class="img-fluid" src="static/img/portfolio/safe.png" alt="">
+              <div id='myDiv5'></div>
+              <!-- <img class="img-fluid" src="static/img/portfolio/safe.png" alt=""> -->
             </a>
           </div>
           <div class="col-md-6 col-lg-4">
@@ -146,7 +148,8 @@
                   <i class="fa fa-search-plus fa-3x"></i>
                 </div>
               </div>
-              <img class="img-fluid" src="static/img/portfolio/submarine.png" alt="">
+              <div id='myDiv6'></div>
+              <!-- <img class="img-fluid" src="static/img/portfolio/submarine.png" alt=""> -->
             </a>
           </div>
         </div>
@@ -598,6 +601,7 @@
           name: 'platinum',
           type: 'bar'
         };
+        data = [trace1, trace2, trace3, trace4];
 
         layout = {barmode: 'group', title: 'Effect of having HIV/AIDS on Premium'};
 
@@ -605,8 +609,121 @@
 
       data1 = {"0": [58.17592442645074, 100.7959379217274, 164.72595816464238, 249.96598515519568], "1": [63.17154183535762, 105.74575236167341, 169.6070681511471, 254.75548920377867], "2": [68.41684210526316, 111.01033738191633, 174.9005802968961, 260.08757085020244], "3": [73.47905533063428, 116.09564102564103, 180.02051956815114, 265.25369095816467], "labels": ["BRONZE", "SILVER", "GOLD", "PLATINUM"]}
 
-      
+      var numsms = ['0', '1', '2', '3']
 
+      trace1 = {
+          x: numsms,
+          y: [58.17592442645074, 63.17154183535762, 68.41684210526316, 73.47905533063428],
+          name: 'bronze',
+          type: 'bar'
+        };
+
+      trace2 = {
+          x: numsms,
+          y: [100.7959379217274, 105.74575236167341, 111.01033738191633, 116.09564102564103],
+          name: 'silver',
+          type: 'bar'
+        };
+
+      trace3 = {
+          x: numsms,
+          y: [164.72595816464238, 169.6070681511471, 174.9005802968961, 180.02051956815114],
+          name: 'gold',
+          type: 'bar'
+        };
+
+      trace4 = {
+          x: numsms,
+          y: [249.96598515519568, 254.75548920377867, 260.08757085020244, 265.25369095816467],
+          name: 'platinum',
+          type: 'bar'
+        };
+        data = [trace1, trace2, trace3, trace4];
+
+        layout = {barmode: 'group', title: 'Number of People in Policy vs Premium'};
+
+      Plotly.newPlot('myDiv4', data, layout);
+
+      data1 = {
+        "bronze": [62.273194603837865, 65.0261475818707],
+        "silver": [106.91572174976378, 97.993654513184],
+        "gold": [173.87951246865262, 147.44491491015393],
+        "platinum": [263.16456676050444, 213.37992877278052]
+    }
+
+    var merp = ['not smokes', 'smokes']
+    trace1 = {
+          x: merp,
+          y: data1['bronze'],
+          name: 'bronze',
+          type: 'bar'
+        };
+
+      trace2 = {
+          x: merp,
+          y: data1['silver'],
+          name: 'silver',
+          type: 'bar'
+        };
+
+      trace3 = {
+          x: merp,
+          y: data1['gold'],
+          name: 'gold',
+          type: 'bar'
+        };
+
+      trace4 = {
+          x: merp,
+          y: data1['platinum'],
+          name: 'platinum',
+          type: 'bar'
+        };
+        data = [trace1, trace2, trace3, trace4];
+
+        layout = {barmode: 'group', title: 'Effect of Smoking on Premium'};
+
+      Plotly.newPlot('myDiv5', data, layout);
+
+
+      // maps
+      function unpack(rows, key) {
+          return rows[key];
+      }
+      data1 = {'states': ['MS', 'OK', 'WY', 'MN', 'IL', 'AR', 'NM', 'IN', 'LA', 'TX', 'WI', 'KS', 'CT', 'CA', 'WV', 'GA', 'ND', 'PA', 'AK', 'MO', 'SD', 'CO', 'NJ', 'WA', 'NY', 'NV', 'MD', 'ID', 'AZ', 'IA', 'MI', 'UT', 'VA', 'OR', 'MT', 'NH', 'MA', 'SC', 'VT', 'FL', 'HI', 'KY', 'RI', 'NE', 'OH', 'AL', 'NC', 'TN', 'DE', 'ME'], 'ages': [41.79932203389831, 41.795978773899364, 27.611439842209073, 27.630750831558096, 42.42929434202161, 42.35782221850333, 27.087264150943398, 68.91139363354037, 42.00620305980529, 41.54769669954628, 27.457417582417584, 42.199089692101744, 68.59115740403526, 27.396067496067495, 69.43685009487666, 42.45954773346647, 27.458921394522854, 69.0013199851687, 27.13062940857298, 41.73968858131488, 27.13936063936064, 27.48975021533161, 68.99260892116183, 27.15814353244521, 68.97129342202513, 27.227272727272727, 69.46993998344371, 27.422685185185184, 27.42468663692373, 27.43688227638845, 69.33647001725626, 27.106269453090263, 69.36615032470989, 27.187882201480527, 27.506692335900258, 69.30771797153025, 68.81204312865498, 69.50368490999155, 69.15731043150397, 42.878484727224226, 27.133279264666125, 68.82331475583864, 69.35304659498208, 41.53541935483871, 68.92394032029931, 42.63191401805815, 69.19548611111111, 41.264994150526455, 69.166015625, 68.83692010309278]}
+
+      data = [{
+          type: 'choropleth',
+          locationmode: 'USA-states',
+          locations: unpack(data1, 'states'),
+          z: unpack(data1, 'ages'),
+          text: unpack(data1, 'states'),
+          zmin: 0,
+          zmax: 17000,
+          autocolorscale: true,
+          colorbar: {
+              title: 'Millions USD',
+              thickness: 0.2
+          },
+          marker: {
+              line:{
+                  color: 'rgb(255,255,255)',
+                  width: 2
+              }
+          }
+      }];
+
+
+      layout = {
+          title: '2011 US Agriculture Exports by State',
+          geo:{
+              scope: 'usa',
+              showlakes: true,
+              lakecolor: 'rgb(255,255,255)'
+          }
+      };
+
+      Plotly.plot('myDiv6', data, layout);
 
 
     </script>>
