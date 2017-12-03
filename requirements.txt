@@ -6,3 +6,4 @@ numpy
 flask_bootstrap
 python-dateutil
 h5py
+geopy

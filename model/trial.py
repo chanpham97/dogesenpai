@@ -27,19 +27,19 @@ from sklearn.externals import joblib
 # model = joblib.load('testsvm.pkl') 
 # print model.predict(features[0].reshape(1, -1)),  labels[0]
 
-# clf = Lasso(alpha=0.005)
-# clf.fit(features, labels2)
-# print clf.coef_
+X, y, X2, y2 = get_feature_sets_regression(fname='../lasso_datahot.csv')
 
-X, y, X2, y2 = get_feature_sets_classification(nn=False)
+clf = Lasso(alpha=0.1)
+clf.fit(X, y)
+print clf.coef_
 
 # lsvc = svm.LinearSVR()
 # lsvc.fit(features, labels2)
 # joblib.dump(lsvc, 'lsvc1.pkl') 
 # print lsvc.coef_
 
-m = LogisticRegression(penalty='l1', C=100)
-m.fit(X, y)
-print m.coef_
-print m.score(X, y)
-print m.score(X2, y2)
+# m = LogisticRegression(penalty='l1', C=100)
+# m.fit(X, y)
+# print m.coef_
+# print m.score(X, y)
+# print m.score(X2, y2)
