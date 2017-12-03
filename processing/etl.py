@@ -45,6 +45,9 @@ def normalize_data():
 
         if progress % 50000 == 0:
             print progress
+
+    print mm_dict
+    quit()
     # other fields
     other_fields = ['sex', 'MARITAL_STATUS', 'PURCHASED', 'TOBACCO']
 
@@ -165,17 +168,69 @@ def lassoize(fname='norm_datahot.csv'):
             row['DOB'] *= -1
             writer.writerow(row)
 
-# def add_bmi(fname='../lasso_data.csv'):
-#     field_names = ['OPTIONAL_INSURED', 'WEIGHT', 'DOB', 'HEIGHT', 'PEOPLE_COVERED', 'SILVER', 'BRONZE', 'PLATINUM', 'ANNUAL_INCOME', 'longitude', 'latitude', 'GOLD', 'sex', 'MARITAL_STATUS', 'PURCHASED', 'TOBACCO', 'E11.65', 'N18.9', 'R00.8', 'T85.622', 'B20.1', 'R19.7', 'R00.0', 'F10.121', 'G30.0', 'G80.4', 'R04.2', 'S62.308', 'M05.10', 'F14.121', 'G47.33', 'T84.011', 'Z91.010', 'B18.1','BMI']
-#     min_max_fields = ['OPTIONAL_INSURED', 'WEIGHT', 'DOB', 'HEIGHT', 'PEOPLE_COVERED', 'SILVER', 'BRONZE', 'PLATINUM', 'ANNUAL_INCOME', 'longitude', 'latitude', 'GOLD']
-#     with open('lasso_data2.csv', 'w') as f:
-#         writer = csv.DictWriter(f, fieldnames=field_names)
-#         writer.writeheader()
-#         for row in read_data(fname):
+
+def calc_avs(fname='../../all_data.csv'):
+    tiers = ['Bronze', 'Silver', 'Gold', 'Platinum']
+    fields = ['OPTIONAL_INSURED', 'WEIGHT', 'DOB', 'HEIGHT', 'PEOPLE_COVERED', 'SILVER', 'BRONZE', 'PLATINUM', 'ANNUAL_INCOME', 'longitude', 'latitude', 'GOLD', 'BMI']
+
+    data = {tier: {field: 0. for field in fields} for tier in tiers}
+    counts = {tier: 0. for tier in tiers}
+
+    for row in read_data(fname):
+        tier = row['PURCHASED']
+        if row['state'] == 'Texas':
+            continue
+        try:
+            data[tier]['DOB'] += time_to_float(row['DOB'])
+        except:
+            continue
+        counts[tier] += 1
+        for field in fields:
+            if field in ['BMI', 'DOB']:
+                continue
+            data[tier][field] += float(row[field])
+
+        h_squared = (convert_to_value(float(row['HEIGHT'])*2-1, 'HEIGHT')*0.025)**2
+        w = convert_to_value(float(row['WEIGHT'])*2-1, 'WEIGHT')*0.45
+        bmi = w/h_squared
+        data[tier]['BMI'] += bmi
+
+    print counts
+
+    for tier in tiers:
+        for field in fields:
+            data[tier][field] /= counts[tier]
+
+    print data
+
+
+def preconditions_only(fname='../data_wo_precon.csv'):
+    field_names = ['BRONZE', 'SILVER', 'GOLD', 'PLATINUM', 'PURCHASED', 'state', 'latitude', 'longitude', 'TOBACCO', 'OPTIONAL_INSURED', 'ANNUAL_INCOME']
+    preconditions = find_preconditions()
+    preconditions_value_map = {'Low': 0.333, 'Medium': 0.666, 'High': 1}
+    with open('precond.csv', 'w') as f:
+        writer = csv.DictWriter(f, fieldnames=field_names+preconditions.keys())
+        writer.writeheader()
+        for row in read_data(fname):
+            data = {}
+            for field in field_names:
+                data[field] = row[field]
+            # Handle Pre-Conditions
+            leftover_pcs = set(preconditions.keys())
+            if '[' in row['PRE_CONDITIONS']:
+                pcs = eval(row['PRE_CONDITIONS'])
+
+                for pc in pcs:
+                    data[pc['ICD_CODE']] = preconditions_value_map[pc['Risk_factor']]
+                    leftover_pcs.remove(pc['ICD_CODE'])
+
+            for pc in leftover_pcs:
+                data[pc] = 0
+            writer.writerow(data)
             
 
 
 if __name__ == '__main__':
-    # normalize_data()
+    normalize_data()
     # lassoize()
-    print find_values('PURCHASED')
+    # print find_values('PURCHASED')

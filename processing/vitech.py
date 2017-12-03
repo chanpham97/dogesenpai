@@ -73,6 +73,7 @@ def without_precon():
         first = it.next()
         del first['PRE_CONDITIONS']
         writer = csv.DictWriter(f, fieldnames=list(first.keys()))
+        writer.writeheader()
         writer.writerow(first)
         for row in it:
             del row['PRE_CONDITIONS']
