@@ -4,3 +4,4 @@ tensorflow
 keras
 numpy
 flask_bootstrap
+dateutil
