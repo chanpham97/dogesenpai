@@ -1,6 +1,6 @@
 import numpy as np
-from keras.models import Sequential
-from keras.layers import Dense, Dropout
+from keras.models import Sequential, Model
+from keras.layers import Dense, Dropout, Input
 from keras.utils import np_utils
 from keras.models import load_model
 from keras.optimizers import SGD
@@ -12,9 +12,9 @@ tf.logging.set_verbosity(tf.logging.ERROR)
 
 def base_model(classification=False):
     # create model
-    model = Sequential()
-
-    model.add(Dense(300, input_dim=29, activation='relu'))
+    # model = Sequential()
+    i = Input(shape=(29,), name='main_input')
+    d1 = Dense(300, activation='relu')(i)
     # model.add(Dropout(0.5))
     # model.add(Dense(2000, activation='relu'))
     # model.add(Dropout(0.5))
@@ -22,9 +22,11 @@ def base_model(classification=False):
 
     # output layer
     if classification:
-        model.add(Dense(4, activation='softmax'))
+        d2 = Dense(4, activation='softmax')(d1)
     else:
-        model.add(Dense(4, activation='linear'))
+        d2 = Dense(4, activation='linear')(d1)
+
+    model = Model(inputs=i, outputs=d2)
 
     # Compile model
     return model
@@ -37,11 +39,11 @@ def train_model(classification=False):
     else:
         X, y, X2, y2 = get_feature_sets_regression()
         loss = 'mean_squared_error'
-    epochs = 50
+    epochs = 300
     best_acc = 0
     print loss
     model = base_model(classification=classification)
-    # optimizer = SGD(lr=0.00001)
+    # optimizer = SGD(lr=0.0000001)
     model.compile(loss=loss, optimizer='adam', metrics=['accuracy'])
     for epoch in xrange(epochs):
         X, y = shuffle(X, y)
@@ -63,5 +65,5 @@ def train_model(classification=False):
 
 
 if __name__ == '__main__':
-    train_model(classification=True)
+    train_model(classification=False)
 
