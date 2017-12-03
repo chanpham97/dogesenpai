@@ -95,7 +95,7 @@ def convert_to_value(reg_val, key):
     middle = (minny+maxy)/2
     return reg_val*(maxy-middle)+middle
 
-def denorm_vals(vals):
+def denormalize_vals(vals):
     labels = ['BRONZE', 'SILVER', 'GOLD', 'PLATINUM']
     result = []
     for i in xrange(len(labels)):
