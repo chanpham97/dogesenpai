@@ -20,13 +20,20 @@ def hello():
 def d3_test():
 	return render_template('d3.html')
 
-@app.route('/precondhot.csv')
-def data():
-	return send_from_directory('')
 
 @app.route('/api/ageprem')
 def age_prem():
     with open('json/ageprem.json') as f:
+        return jsonify(json.load(f))
+
+@app.route('/api/alzheimers')
+def alzheimers():
+    with open('json/alzheimers.json') as f:
+        return jsonify(json.load(f))
+
+@app.route('/api/num-covered-prem')
+def num_covered_prem():
+    with open('json/num_covered_prem.json') as f:
         return jsonify(json.load(f))
 
 
