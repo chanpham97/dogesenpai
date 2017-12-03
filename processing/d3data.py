@@ -125,10 +125,17 @@ def prem_by_state():
     }
 
     print states
-    with open('../json/state_age.json', 'w') as f:
+    with open('../json/state_prem.json', 'w') as f:
         json.dump(states, f)
 
 
 if __name__ == '__main__':
-    prem_by_state()
+    with open('../json/num_covered_prem.json') as f:
+        data = json.load(f)
+        results = {i: data[i] for i in xrange(len(data))}
+        results['labels'] = ['BRONZE', 'SILVER', 'GOLD', 'PLATINUM']
+    with open('../json/num_covered_prem.json', 'w') as f:
+        json.dump(results, f)
+
+
         

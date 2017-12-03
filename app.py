@@ -43,7 +43,7 @@ def state_prem():
         return jsonify(json.load(f))
 
 @app.route('/api/stateage')
-def num_covered_prem():
+def state_age():
     with open('json/state_age.json') as f:
         return jsonify(json.load(f))
 
