@@ -698,11 +698,11 @@
           locations: unpack(data1, 'states'),
           z: unpack(data1, 'ages'),
           text: unpack(data1, 'states'),
-          zmin: 0,
-          zmax: 17000,
+          zmin: 10,
+          zmax: 70,
           autocolorscale: true,
           colorbar: {
-              title: 'Millions USD',
+              title: 'Average Age',
               thickness: 0.2
           },
           marker: {
@@ -715,7 +715,7 @@
 
 
       layout = {
-          title: '2011 US Agriculture Exports by State',
+          title: 'Average Age Per State',
           geo:{
               scope: 'usa',
               showlakes: true,
