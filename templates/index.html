@@ -534,8 +534,7 @@
         	 title:'Age vs Premium Price($)'
         }
 
-         layoutThumb = object.assign(layout)
-         layoutThumb['hovermode'] = !1;
+         
           // title:'Age vs Premium Price($/)'
         // };
 
@@ -544,6 +543,8 @@
         
         data = [trace1, trace2, trace3, trace4]
         Plotly.newPlot('myDiv1', data, layout);
+        layoutThumb = Object.assign(layout)
+         layoutThumb['hovermode'] = !1;
         Plotly.newPlot('myDiv1Thumb', data, layoutThumb);
       
         // alzheimers
@@ -585,11 +586,12 @@
 
       layout = {barmode: 'group', title: 'Effect of having Alzheimers on Premium'};
 
-      layoutThumb = object.assign(layout)
+      layoutThumb = Object.assign(layout)
+      Plotly.newPlot('myDiv2', data, layout);
 	  layoutThumb['hovermode'] = !1;
 
-      Plotly.newPlot('myDiv2', data, layout);
-      Plotly.newPlot('myDiv2thumb', data, layoutThumb);
+      
+      Plotly.newPlot('myDiv2Thumb', data, layoutThumb);
 
 
       data1 = {"0": [53.56962897123631, 89.51223189646748, 143.42613628431423, 215.31134213477657], "1": [64.31109423979645, 108.04624230925856, 173.64896441345172, 261.119260552376], "labels": ["BRONZE", "SILVER", "GOLD", "PLATINUM"]}
@@ -625,10 +627,11 @@
 
         layout = {barmode: 'group', title: 'Effect of having HIV/AIDS on Premium'};
 
-        layoutThumb = object.assign(layout)
-	  	layoutThumb['hovermode'] = !1;
+        
 
       Plotly.newPlot('myDiv3', data, layout);
+      layoutThumb = Object.assign(layout)
+      layoutThumb['hovermode'] = !1;
       Plotly.newPlot('myDiv3Thumb', data, layoutThumb);
 
 
@@ -667,10 +670,11 @@
 
         layout = {barmode: 'group', title: 'Number of People in Policy vs Premium'};
 
-      layoutThumb = object.assign(layout)
-	  	layoutThumb['hovermode'] = !1;
+      
 
       Plotly.newPlot('myDiv4', data, layout);
+      layoutThumb = Object.assign(layout)
+      layoutThumb['hovermode'] = !1;
       Plotly.newPlot('myDiv4Thumb', data, layoutThumb);
 
       data1 = {
@@ -712,10 +716,11 @@
 
         layout = {barmode: 'group', title: 'Effect of Smoking on Premium'};
 
-      layoutThumb = object.assign(layout)
-	  	layoutThumb['hovermode'] = !1;
+      
 
       Plotly.newPlot('myDiv5', data, layout);
+      layoutThumb = Object.assign(layout)
+      layoutThumb['hovermode'] = !1;
       Plotly.newPlot('myDiv5Thumb', data, layoutThumb);
 
       // maps
@@ -755,10 +760,11 @@
           }
       };
 
-layoutThumb = object.assign(layout)
-	  	layoutThumb['hovermode'] = !1;
+
 
       Plotly.newPlot('myDiv6', data, layout);
+      layoutThumb = Object.assign(layout)
+      layoutThumb['hovermode'] = !1;
       Plotly.newPlot('myDiv6Thumb', data, layoutThumb);
 
     </script>>
