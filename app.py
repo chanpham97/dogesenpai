@@ -3,13 +3,11 @@ from flask_bootstrap import Bootstrap
 from keras.models import load_model
 from model.util import *
 import json
-from flask_cors import CORS
 app = Flask(__name__)
 
 
 def create_app():
     app = Flask(__name__)
-    CORS(app)
     Bootstrap(app)
     return app
 
