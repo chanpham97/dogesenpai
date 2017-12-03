@@ -82,6 +82,22 @@ def smoking_prem():
         json.dump(data, f)
 
 
+def hiv_prem():
+    data = [[0., 0., 0., 0.], [0., 0., 0., 0.]]
+    counts = [0., 0.]
+    for row in read_data('../unnorm_data.csv'):
+        ind = int(row['B20.1'])
+        counts[ind] += 1
+        for i, label in enumerate(['BRONZE', 'SILVER', 'GOLD', 'PLATINUM']):
+            data[ind][i] += float(row[label])
+
+    data[0] = map(lambda x: x/counts[0], data[0])
+    data[1] = map(lambda x: x/counts[1], data[1])
+
+    with open('../json/hiv_prem.json', 'w') as f:
+        json.dump(data, f)
+
+
 def state_age():
     states = {}
     for row in read_data('../data_wo_precon.csv'):
@@ -130,11 +146,12 @@ def prem_by_state():
 
 
 if __name__ == '__main__':
-    with open('../json/num_covered_prem.json') as f:
+    hiv_prem()
+    with open('../json/hiv_prem.json') as f:
         data = json.load(f)
         results = {i: data[i] for i in xrange(len(data))}
         results['labels'] = ['BRONZE', 'SILVER', 'GOLD', 'PLATINUM']
-    with open('../json/num_covered_prem.json', 'w') as f:
+    with open('../json/hiv_prem.json', 'w') as f:
         json.dump(results, f)
 
 

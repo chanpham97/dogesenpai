@@ -25,6 +25,9 @@ def d3_test():
 @app.route('/api/ageprem')
 def age_prem():
     with open('json/ageprem.json') as f:
+        data = json.load(f)
+        for k, v in data.iteritems():
+            data[k] = map(float, v)
         return jsonify(json.load(f))
 
 @app.route('/api/alzheimers')
@@ -45,6 +48,11 @@ def state_prem():
 @app.route('/api/stateage')
 def state_age():
     with open('json/state_age.json') as f:
+        return jsonify(json.load(f))
+
+@app.route('/api/hivprem')
+def hiv_prem():
+    with open('json/hiv_prem.json') as f:
         return jsonify(json.load(f))
 
 
