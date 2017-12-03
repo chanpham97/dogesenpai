@@ -3,11 +3,15 @@ from flask_bootstrap import Bootstrap
 from keras.models import load_model
 from model.util import *
 import json
+from flask_cors import CORS
+app = Flask(__name__)
+
 
 def create_app():
-	app = Flask(__name__)
-	Bootstrap(app)
-	return app
+    app = Flask(__name__)
+    CORS(app)
+    Bootstrap(app)
+    return app
 
 #TODO: uncomment later
 regression_model = load_model('regression1.h5')
@@ -15,11 +19,11 @@ app = create_app()
 
 @app.route('/')
 def hello():
-	return render_template('index.html')
+    return render_template('index.html')
 
 @app.route('/d3')
 def d3_test():
-	return render_template('d3.html')
+    return render_template('d3.html')
 
 
 @app.route('/api/ageprem')
@@ -69,4 +73,4 @@ def get_premiums():
     return jsonify(data)
 
 if __name__ == '__main__':
-	app.run(debug=True)
+    app.run(debug=True)
