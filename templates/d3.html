@@ -71,10 +71,10 @@ console.log("please")
   }
 
   function loadData(cb){
-    d3.csv("precondhot.csv", (err, data) => {
+    d3.json("/api/ageprem", (err, data) => {
+        console.log(data)
         cb(data)
     })
-    console.log(data)
   }
 
   function main() {

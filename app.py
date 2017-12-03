@@ -9,6 +9,7 @@ def create_app():
 	Bootstrap(app)
 	return app
 
+#TODO: uncomment later
 regression_model = load_model('regression1.h5')
 app = create_app()
 
@@ -58,3 +59,6 @@ def get_premiums():
     plans = ['BRONZE', 'SILVER', 'GOLD', 'PLATINUM']
     data = {plans[i]: denorm_vals[i] for i in xrange(len(plans))}
     return jsonify(data)
+
+if __name__ == '__main__':
+	app.run(debug=True)
