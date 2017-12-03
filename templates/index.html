@@ -104,7 +104,8 @@
                   <i class="fa fa-search-plus fa-3x"></i>
                 </div>
               </div>
-              <img class="img-fluid" src="static/img/portfolio/cake.png" alt="">
+              <div id='myDiv2'></div>
+              <!-- <img class="img-fluid" src="static/img/portfolio/cake.png" alt=""> -->
             </a>
           </div>
           <div class="col-md-6 col-lg-4">
@@ -114,7 +115,8 @@
                   <i class="fa fa-search-plus fa-3x"></i>
                 </div>
               </div>
-              <img class="img-fluid" src="static/img/portfolio/circus.png" alt="">
+              <!-- <img class="img-fluid" src="static/img/portfolio/circus.png" alt=""> -->
+              <div id='myDiv3'></div>
             </a>
           </div>
           <div class="col-md-6 col-lg-4">
@@ -526,6 +528,85 @@
         Plotly.newPlot('myDiv1', data, layout);
         Plotly.newPlot('myDiv11', data, layout);
       
+        // alzheimers
+        data1 = {
+          "bronze": [53.10316323556596, 76.93131903833658],
+          "silver": [85.97127537602618, 133.84165375451926],
+          "gold": [135.27344358671652, 219.20715582879325],
+          "platinum": [201.00966786763698, 333.02782526115857]
+      }
+
+       trace1 = {
+          x: ['not present', 'present'],
+          y: data1['bronze'],
+          name: 'bronze',
+          type: 'bar'
+        };
+
+      trace2 = {
+          x: ['not present', 'present'],
+          y: data1['silver'],
+          name: 'silver',
+          type: 'bar'
+        };
+
+      trace3 = {
+          x: ['not present', 'present'],
+          y: data1['gold'],
+          name: 'gold',
+          type: 'bar'
+        };
+
+      trace4 = {
+          x: ['not present', 'present'],
+          y: data1['platinum'],
+          name: 'platinum',
+          type: 'bar'
+        };
+        data = [trace1, trace2, trace3, trace4];
+
+      layout = {barmode: 'group', title: 'Effect of having Alzheimers on Premium'};
+
+      Plotly.newPlot('myDiv2', data, layout);
+
+      data1 = {"0": [53.56962897123631, 89.51223189646748, 143.42613628431423, 215.31134213477657], "1": [64.31109423979645, 108.04624230925856, 173.64896441345172, 261.119260552376], "labels": ["BRONZE", "SILVER", "GOLD", "PLATINUM"]}
+
+      trace1 = {
+          x: ['not present', 'present'],
+          y: [53.56962897123631, 64.31109423979645],
+          name: 'bronze',
+          type: 'bar'
+        };
+
+      trace2 = {
+          x: ['not present', 'present'],
+          y: [89.51223189646748, 108.04624230925856],
+          name: 'silver',
+          type: 'bar'
+        };
+
+      trace3 = {
+          x: ['not present', 'present'],
+          y: [143.42613628431423, 173.64896441345172],
+          name: 'gold',
+          type: 'bar'
+        };
+
+      trace4 = {
+          x: ['not present', 'present'],
+          y: [215.31134213477657, 261.119260552376],
+          name: 'platinum',
+          type: 'bar'
+        };
+
+        layout = {barmode: 'group', title: 'Effect of having HIV/AIDS on Premium'};
+
+      Plotly.newPlot('myDiv3', data, layout);
+
+      data1 = {"0": [58.17592442645074, 100.7959379217274, 164.72595816464238, 249.96598515519568], "1": [63.17154183535762, 105.74575236167341, 169.6070681511471, 254.75548920377867], "2": [68.41684210526316, 111.01033738191633, 174.9005802968961, 260.08757085020244], "3": [73.47905533063428, 116.09564102564103, 180.02051956815114, 265.25369095816467], "labels": ["BRONZE", "SILVER", "GOLD", "PLATINUM"]}
+
+      
+
 
 
     </script>>

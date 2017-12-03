@@ -13,13 +13,14 @@
 <script type="text/javascript">
   d3.json("/api/ageprem", (err, data) => {
     console.log(data)
-    for (d in data) {
-        d.age = +d.age;
-        d.bronze = +d.bronze;
-        d.silver = +d.silver;
-        d.gold = +d.gold;
-        d.platinum = +d.platinum;
-    };
+    // for (d in data) {
+    //     info = Array()
+    //     for(var i =0; i<d.length; i++) {
+    //       info.push(+d[i].value);
+    //     }
+    //     data.d = info;
+    // };
+    console.log(data.platinum)
     console.log(data.platinum[0] + data.platinum[1])
     var chart = makeLineChart(data, 'age', {
         'Bronze': {column: 'bronze'},
