@@ -1,89 +1,161 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="../static/css/multiline.css">
+    <script src="http://d3js.org/d3.v3.js" charset="utf-8"></script>
+    <!--<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>-->
+</head>
+<body>
+<div class="chart-wrapper" id="chart-line1"></div>
+
+<script type="text/javascript">
+  d3.json("/api/ageprem", (err, data) => {
+    console.log(data)
+    for (d in data) {
+        d.age = +d.age;
+        d.bronze = +d.bronze;
+        d.silver = +d.silver;
+        d.gold = +d.gold;
+        d.platinum = +d.platinum;
+    };
+    console.log(data.platinum[0] + data.platinum[1])
+    var chart = makeLineChart(data, 'age', {
+        'Bronze': {column: 'bronze'},
+        'Silver': {column: 'silver'},
+        'Gold': {column: 'gold'},
+        'Platinum': {column: 'platinum'}
+      },{xAxis: 'Years', yAxis: 'Price'});
+    chart.bind("#chart-line1");
+    chart.render();
+  });
+</script>
+<script src="../static/js/multiline.js" charset="utf-8"></script>
+</body>
+</html>
+
+<!-- <!DOCTYPE html>
 <svg width="960" height="500"></svg>
-<script src="https://d3js.org/d3.v4.min.js"></script>
 <head>
   <title>my dude</title>
 </head>
+<style>
+  .line {
+    fill: none;
+    stroke: steelblue;
+    stroke-width: 2px;
+  }
+</style>
 <body>
   <p>hi</p>
   <svg id="chart"></svg>
-</body>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+
 <script>
-console.log("please")
-// var svg = d3.select("svg"),
-//     margin = {top: 20, right: 20, bottom: 30, left: 50},
-//     width = +svg.attr("width") - margin.left - margin.right,
-//     height = +svg.attr("height") - margin.top - margin.bottom,
-//     g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-// console.log(svg)
-// var x = d3.scaleLinear()
-// 	.rangeRound([0, width])
+  // var svg = d3.select("svg"),
+  //     margin = {top: 20, right: 80, bottom: 30, left: 50},
+  //     width = svg.attr("width") - margin.left - margin.right,
+  //     height = svg.attr("height") - margin.top - margin.bottom,
+  //     g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  var margin = {top: 20, right: 20, bottom: 30, left: 50},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
 
-// var y = d3.scaleLinear()
-// 	.rangeRound([height, 0])
-// console.log(x)
-// var line = d3.line()
-// 	.x(function(d) {return x(d.alzheimer);})
-// 	.y(function(d) {return y(d.BRONZE);});
+  var x = d3.scaleLinear().range([0, width]);
+  var y = d3.scaleLinear().range([height, 0]);
 
-// d3.csvParse("precondhot.csv", function(d){
-//   console.log("in parse")
-// 	d.alzheimer = +d.alzheimer;
-// 	d.BRONZE = +d.BRONZE;
-//   console.log(d)
-// 	return d;
-// }, function(err, data) {
-// 	if (err) throw err;
+  var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+      .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");
 
-// 	x.domain(d3.extent(data, function(d) { return d.alzheimer;}));
-// 	y.domain(d3.extent(data, function(d) {
-// 		return d.BRONZE;}));
+  
+  // var bronze_line = d3.line()
+  //   .x(function(d) { 
+  //     console.log('in line(), age: ' + d.age);
+  //     return x(d.age); 
+  //   })
+  //   .y(function(d) { 
+  //     console.log('in line(), bronze: ' + d.bronze);
+  //     return y(d.bronze); 
+  //   });
 
-// 	g.append("g")
-//       .attr("transform", "translate(0," + height + ")")
-//       .call(d3.axisBottom(x))
-//     .select(".domain")
-//       .remove();
+  // console.log('bronze: ' + bronze_line)
 
-//   g.append("g")
-//       .call(d3.axisLeft(y))
-//     .append("text")
-//       .attr("fill", "#000")
-//       .attr("transform", "rotate(-90)")
-//       .attr("y", 6)
-//       .attr("dy", "0.71em")
-//       .attr("text-anchor", "end")
-//       .text("Price ($)");
+  // var silver_line = d3.line()
+  //   .x(function(d) { return x(d.age); })
+  //   .y(function(d) { return y(d.silver); });
 
-//   g.append("path")
-//       .datum(data)
-//       .attr("fill", "none")
-//       .attr("stroke", "steelblue")
-//       .attr("stroke-linejoin", "round")
-//       .attr("stroke-linecap", "round")
-//       .attr("stroke-width", 1.5)
-//       .attr("d", line);
-// });
+  d3.json("/api/ageprem", (err, data) => {
+    if (err) throw err;
+    console.log(data)
+    x.domain(d3.extent(data, (d) => { 
+      console.log('test')
+      console.log('in domain: ' + d);
+      console.log(d.age);
+      return d.age; 
+    }));
 
-  function drawChart(data) {
-    let indicator = "a"
-    let country = "b"
-  }
+    y.domain([0, d3.max(data, function(d) { 
+      return Math.max(d.bronze, d.silver); })]);
 
-  function loadData(cb){
-    d3.json("/api/ageprem", (err, data) => {
-        console.log(data)
-        cb(data)
-    })
-  }
+    var lineFunctionB = d3.line()
+    .x(function(d) { return +d.age; })
+    .y(function(d) { return +d.bronze; });
 
-  function main() {
-    d3.select("#chart")
-      .attr("width", 500)
-      .attr("height", 500)
-    loadData(drawChart)
-  }
+    var lineFunctionS = d3.line()
+      .x(function(d) { 
+        console.log(d.bronze)
+        return +d.age; 
+      })
+      .y(function(d) { 
+        return +d.silver; 
+      });
 
-  main()
+    // g.append("g")
+    //     .attr("transform", "translate(0," + height + ")")
+    //     .call(d3.axisBottom(x));
+
+    // g.append("g")
+    //     .call(d3.axisLeft(y))
+    //   .append("text")
+    //     .attr("transform", "rotate(-90)")
+    //     .attr("y", 6)
+    //     .attr("dy", "0.71em")
+    //     .attr("fill", "#000")
+    //     .text("Price, $");
+
+    // var premium = g.selectAll(".premium")
+    //   .data(data)
+    //   .enter().append("g")
+
+    svg.append("path")
+        .data([data])
+        .attr("class", "line")
+        .attr("d", lineFunctionB(data.bronze))
+        .style("stroke", "brown");
+
+    svg.append("path")
+        .data([data])
+        .attr("class", "line")
+        .attr("d", lineFunctionS(data.silver))
+        .style("stroke", "gray");
+
+    // Add the X Axis
+    svg.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x));
+
+    // Add the Y Axis
+    svg.append("g")
+        .call(d3.axisLeft(y));
+  });
+
+  
 
 </script>
+</body>
+ -->
