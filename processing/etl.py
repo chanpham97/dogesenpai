@@ -155,7 +155,6 @@ def convert_to_value(reg_val, key):
     return reg_val*(maxy-middle)+middle
 
 
-
 def lassoize(fname='norm_datahot.csv'):
     field_names = ['OPTIONAL_INSURED', 'WEIGHT', 'DOB', 'HEIGHT', 'BMI', 'PEOPLE_COVERED', 'SILVER', 'BRONZE', 'PLATINUM', 'ANNUAL_INCOME', 'longitude', 'latitude', 'GOLD', 'sex', 'MARITAL_STATUS', 'PURCHASED', 'TOBACCO', 'E11.65', 'N18.9', 'R00.8', 'T85.622', 'B20.1', 'R19.7', 'R00.0', 'F10.121', 'G30.0', 'G80.4', 'R04.2', 'S62.308', 'M05.10', 'F14.121', 'G47.33', 'T84.011', 'Z91.010', 'B18.1']
     min_max_fields = ['OPTIONAL_INSURED', 'WEIGHT', 'DOB', 'HEIGHT', 'BMI', 'PEOPLE_COVERED', 'SILVER', 'BRONZE', 'PLATINUM', 'ANNUAL_INCOME', 'longitude', 'latitude', 'GOLD']
